@@ -1,4 +1,4 @@
-module models
+module entities
 
 import time { Time }
 import enums { DataType, FormItemKind }

@@ -1,4 +1,4 @@
-module models
+module entities
 
 import time { Time }
 import enums { TemplateStatus }
@@ -15,3 +15,4 @@ pub struct FormTemplate {
 	deleted_at ?Time          @[sql_type: 'TIMESTAMP']
 	deleted_by string
 }
+

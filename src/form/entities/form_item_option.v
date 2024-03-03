@@ -1,4 +1,4 @@
-module models
+module entities
 
 import enums { DataType }
 

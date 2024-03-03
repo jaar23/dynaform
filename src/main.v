@@ -1,10 +1,11 @@
 module main
 
 import x.vweb { Controller, Result }
+import os { getenv }
 import db.sqlite
 import zztkm.vdotenv
-import os { getenv }
-import controllers {FormTemplateCtr, FormTemplateCtx}
+import form.controller as form_ctr
+
 
 pub struct Context {
 	vweb.Context
@@ -23,17 +24,6 @@ pub fn (app &App) index(mut ctx Context) Result {
 }
 
 
-pub fn logging(mut ctx Context) bool {
-	println('middleware ${ctx.req.url}')
-	return true
-}
-
-fn middleware_unreachable(mut ctx Context) bool {
-	ctx.text('unreachable, ${ctx.req.data}')
-	return false
-}
-
-
 fn main() {
 	vdotenv.load()
 
@@ -47,11 +37,9 @@ fn main() {
 
 	mut app := &App{db: &db}
 
-	mut form_template_ctr := controllers.new_form_template_controller(&db)
+	mut form_template_ctr := form_ctr.new_form_template_controller(&db)
 	
-	app.register_controller[FormTemplateCtr, Context]('/form-template', mut form_template_ctr)!
-	
-	app.use(handler: logging)
+	app.register_controller[form_ctr.FormTemplateCtr, Context]('/form-template', mut form_template_ctr)!
 
 	vweb.run[App, Context](mut app, 8000)
 }
